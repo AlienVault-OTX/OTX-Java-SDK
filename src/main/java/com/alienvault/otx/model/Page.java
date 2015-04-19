@@ -6,14 +6,10 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * Created by rspitler on 4/16/15.
+ * A Page of results
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Page {
-//        "count": 28,
-//        "next": "http://localhost:8000/api/v1/pulses/subscribed?since=2014-12-10T18%3A07%3A38&page=2",
-//        "previous": null,
-//        "results": [
     private Integer count;
     private URI nextURI;
     private URI previousURI;

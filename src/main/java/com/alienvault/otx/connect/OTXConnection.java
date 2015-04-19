@@ -3,95 +3,135 @@ package com.alienvault.otx.connect;
 import com.alienvault.otx.connect.internal.HTTPConfig;
 import com.alienvault.otx.model.Page;
 import com.alienvault.otx.model.Pulse;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
- * Created by rspitler on 4/16/15.
+ * OTXConnextion takes care of the requests made to
+ * the OTX service.  The utility methods provided give you
+ * the mechanisms necessary to get the Pulses that have
+ * been subscribed to in the OTX API.
+ *
+ * Construct this class passing in your API key found in the
+ * 'Settings' page of the web interface.
  */
 public class OTXConnection {
 
     private RestTemplate restTemplate;
-    private String otxHost;
-    private String otxScheme;
+    private String otxHost = "otx.alienvault.com";
+    private String otxScheme = "https";
     private Integer otxPort = null;
+    private static DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 
+    /**
+     * Construct the OTX Connection providing full connection details.
+     * @param apiKey - API key for your OTX Account
+     * @param otxHost - host of the OTX server (otx.alienvault.com by default)
+     * @param otxScheme - scheme to use for the connection to the server (https by default)
+     * @param port - port for the connection to the server (443 by default)
+     */
     public OTXConnection(String apiKey, String otxHost, String otxScheme, Integer port) {
         this.otxHost = otxHost;
         this.otxScheme = otxScheme;
         otxPort = port;
         configureRestTemplate(apiKey);
     }
+    /**
+    * Construct the OTX Connection providing full connection details.
+    * @param apiKey - API key for your OTX Account
+    * @param otxHost - host of the OTX server (otx.alienvault.com by default)
+    * @param otxScheme - scheme to use for the connection to the server (https by default)
+    */
     public OTXConnection(String apiKey, String otxHost, String otxScheme) {
         this.otxHost = otxHost;
         this.otxScheme = otxScheme;
         configureRestTemplate(apiKey);
     }
-
+    /**
+    * Construct the OTX Connection providing full connection details.
+    * @param apiKey - API key for your OTX Account
+    */
     public OTXConnection(String apiKey) {
-        this.otxHost = "otx.alienvault.com";
-        this.otxScheme = "https";
         configureRestTemplate(apiKey);
     }
-
+    /**
+    * Construct the OTX Connection providing full connection details.
+    * @param apiKey - API key for your OTX Account
+    * @param otxHost - host of the OTX server (otx.alienvault.com by default)
+    */
     public OTXConnection(String apiKey, String otxHost) {
         this.otxHost = otxHost;
-        this.otxScheme = "https";
         configureRestTemplate(apiKey);
     }
 
+    /**
+     * Internal API to configure RestTemplate
+     * @param apiKey - API key to configure authorization header
+     */
     private void configureRestTemplate(String apiKey) {
         ClientHttpRequestFactory requestFactory = HTTPConfig.createRequestFactory(apiKey);
         restTemplate = new RestTemplate(requestFactory);
     }
 
-    public void dump() throws URISyntaxException, MalformedURLException {
-        ResponseEntity<String> response = restTemplate.getForEntity(buildURI(OTXEndpoints.SUBSCRIBED), String.class);
-        System.out.println(response);
-    }
+    /**
+     * Utility method to access all Pulses subscribed to in the web interface.
+     * @return All of the Pulses
+     * @throws URISyntaxException
+     * @throws MalformedURLException
+     */
     public List<Pulse> getAllPulses() throws URISyntaxException, MalformedURLException {
+       return getPulses(null);
+    }
+    /**
+    * Utility method to access all Pulses modified since the date passed to the API.
+    * @return All of the Pulses modified since the lastUpdated date
+    * @param lastUpdated - date to cut off the list of pulses
+    * @throws URISyntaxException
+    * @throws MalformedURLException
+    */
+    public List<Pulse> getPulsesSinceDate(DateTime lastUpdated) throws URISyntaxException, MalformedURLException {
+        return getPulses(Collections.singletonMap(OTXEndpointParameters.MODIFIED_SINCE, fmt.print(lastUpdated)));
+    }
+
+    private List<Pulse> getPulses(Map<OTXEndpointParameters, ?> endpointParametersMap) throws URISyntaxException, MalformedURLException {
         List<Pulse> pulseList = new ArrayList<>();
-        Page firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, Page.class);
+        Page firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED,endpointParametersMap, Page.class);
         pulseList.addAll(firstPage.getResults());
         while (firstPage.getNextURI() != null) {
+            firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, endpointParametersMap, Page.class);
             pulseList.addAll(firstPage.getResults());
-            firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, Page.class);
         }
         return pulseList;
     }
 
-    public List<Pulse> getPulsesSinceDate(Date lastUpdated) throws URISyntaxException, MalformedURLException {
-        List<Pulse> pulseList = new ArrayList<>();
-        Page firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, Page.class);
-        pulseList.addAll(firstPage.getResults());
-        while (firstPage.getNextURI() != null) {
-            firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, Page.class);
-            pulseList.addAll(firstPage.getResults());
+    private <T> T executeGetRequest(OTXEndpoints subscribed, Map<OTXEndpointParameters, ?> endpointParametersMap, Class<T> classType) throws URISyntaxException, MalformedURLException {
+        return restTemplate.getForObject(buildURI(subscribed, endpointParametersMap), classType);
+    }
+
+    private URI buildURI(OTXEndpoints endpoint, Map<OTXEndpointParameters, ?> endpointParametersMap) throws URISyntaxException, MalformedURLException {
+
+        String endpointString = endpoint.getEndpoint();
+        if(endpointParametersMap!=null){
+            endpointString = endpointString+"?";
+            for (Map.Entry<OTXEndpointParameters, ?> otxEndpointParametersEntry : endpointParametersMap.entrySet()) {
+                String parameterName = otxEndpointParametersEntry.getKey().getParameterName();
+                String value = otxEndpointParametersEntry.getValue().toString();
+                endpointString = endpointString+ String.format("%s=%s&", parameterName, value);
+            }
         }
-        return pulseList;
-    }
-
-    private <T> T executeGetRequest(OTXEndpoints subscribed, Class<T> classType) throws URISyntaxException, MalformedURLException {
-        return restTemplate.getForObject(buildURI(subscribed), classType);
-    }
-
-    private URI buildURI(OTXEndpoints endpoint) throws URISyntaxException, MalformedURLException {
         if (otxPort!=null) {
-            return new URL(otxScheme, otxHost, otxPort, endpoint.getEndpoint()).toURI();
+            return new URL(otxScheme, otxHost, otxPort, endpointString).toURI();
         } else {
-            return new URL(otxScheme, otxHost, endpoint.getEndpoint()).toURI();
+            return new URL(otxScheme, otxHost, endpointString).toURI();
         }
     }
 }

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by rspitler on 4/16/15.
+ * A utility object to represent a Pulse
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Pulse {
@@ -22,6 +22,10 @@ public class Pulse {
     private Integer revision;
     private List<Indicator> indicators;
 
+    /**
+     * The internal ID of the pulse
+     * @return string representing the pulse id
+     */
     public String getId() {
         return id;
     }
@@ -30,6 +34,10 @@ public class Pulse {
         this.id = id;
     }
 
+    /**
+     * The name of the pulse
+     * @return the pulse name
+     */
     public String getName() {
         return name;
     }
@@ -38,6 +46,10 @@ public class Pulse {
         this.name = name;
     }
 
+    /**
+     * The description of the pulse
+     * @return the description provided when the pulse was originally created
+     */
     public String getDescription() {
         return description;
     }
@@ -46,6 +58,10 @@ public class Pulse {
         this.description = description;
     }
 
+    /**
+     * The name of the author of the pulse
+     * @return the author who originally submitted the pulse
+     */
     public String getAuthor_name() {
         return author_name;
     }
@@ -54,6 +70,10 @@ public class Pulse {
         this.author_name = author_name;
     }
 
+    /**
+     * The last date this pulse was updated
+     * @return last modification date
+     */
     public Date getModified() {
         return modified;
     }
@@ -62,6 +82,10 @@ public class Pulse {
         this.modified = modified;
     }
 
+    /**
+     * The date this pulse was created
+     * @return creation date
+     */
     public Date getCreated() {
         return created;
     }
@@ -70,6 +94,10 @@ public class Pulse {
         this.created = created;
     }
 
+    /**
+     * Tags associted with this pulse
+     * @return list of tags
+     */
     public List<String> getTags() {
         return tags;
     }
@@ -78,6 +106,10 @@ public class Pulse {
         this.tags = tags;
     }
 
+    /**
+     * The list of references associated with this pulse
+     * @return a list of references
+     */
     public List<String> getReferences() {
         return references;
     }
@@ -86,6 +118,10 @@ public class Pulse {
         this.references = references;
     }
 
+    /**
+     * The revision of this representation of the pulse
+     * @return
+     */
     public Integer getRevision() {
         return revision;
     }
@@ -94,6 +130,10 @@ public class Pulse {
         this.revision = revision;
     }
 
+    /**
+     * The indicators associated with this pulse
+     * @return List of indicators
+     */
     public List<Indicator> getIndicators() {
         return indicators;
     }

@@ -45,7 +45,6 @@ public class OtxJavaSdkApplication {
         Integer port =null;
         if(otxPort!=null)
             port = Integer.valueOf(otxPort);
-//        String apiKey = environment.getProperty("scheme");
 //        String apiKey = "840badc620c9d115a7a16ed2f9d4267cd0660b2d3bb63a76df630f061e15de7b";
         OTXConnection connection;
         if (port!=null) {

@@ -15,6 +15,11 @@ public class Indicator {
     private String description;
     private Date created;
 
+    /**
+     * The actual indicator represented by this object.  See getType()
+     * for the type of this indicator
+     * @return the string representation of this indicator
+     */
     public String getIndicator() {
         return indicator;
     }
@@ -23,6 +28,11 @@ public class Indicator {
         this.indicator = indicator;
     }
 
+    /**
+     * Returns the type of this indicator
+     * @see IndicatorType
+     * @return ip, domain, md5
+     */
     public String getType() {
         return type;
     }
@@ -31,6 +41,10 @@ public class Indicator {
         this.type = type;
     }
 
+    /**
+     * The description provided by the original submitter of the indicator
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
@@ -39,6 +53,9 @@ public class Indicator {
         this.description = description;
     }
 
+    /**
+     * @return the date the indicator was originally submitted to OTX
+     */
     public Date getCreated() {
         return created;
     }

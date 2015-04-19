@@ -10,7 +10,8 @@ import java.io.IOException;
 import java.net.URI;
 
 /**
- * Created by rspitler on 4/16/15.
+ * Internal utility class to set the authorization header used for the OTX API
+ * authentication.
  */
 public class HeaderSettingRequestFactory extends SimpleClientHttpRequestFactory {
     private static final String SDK_USER_AGENT = "OTX Java SDK/1.0/"+System.getProperty("java.version");
