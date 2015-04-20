@@ -19,7 +19,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 @SpringBootApplication
-public class OtxJavaSdkApplication {
+public class CommandlineRunner {
 
     private static Options getOptions() {
         Options opts = new Options();
@@ -32,13 +32,11 @@ public class OtxJavaSdkApplication {
     }
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext run = SpringApplication.run(OtxJavaSdkApplication.class, args);
+        ConfigurableApplicationContext run = SpringApplication.run(CommandlineRunner.class, args);
 
         List<String> filteredArgs = new ArrayList<>();
         for (String arg : args) {
-            if ("--spring.output.ansi.enabled=always".equals(arg))
-                continue;
-            else
+            if (!"--spring.output.ansi.enabled=always".equals(arg))
                 filteredArgs.add(arg);
         }
         try {

@@ -4,23 +4,23 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.alienvault.otx</groupId>
-	<artifactId>sdk</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>DirectConnect-Java-SDK</artifactId>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>OTX Java SDK</name>
-	<description>Demo project for Spring Boot</description>
+	<description>OTX DirectConnect SDK for Java</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.2.3.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>com.alienvault.otx.OtxJavaSdkApplication</start-class>
+		<start-class>com.alienvault.otx.CommandlineRunner</start-class>
 		<java.version>1.7</java.version>
 	</properties>
 
