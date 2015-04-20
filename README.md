@@ -20,6 +20,13 @@ java -jar target/DirectConnect-Java-SDK-0.1.0.jar
 |  -k  | --key <arg> | API Key from OTX Settings Page (https://otx.alienvault.com/settings/). |
 |  -o  | --output-file <arg> | File to save indicators (Optional, default will write to console) |
 
+
+_Example_
+Print all IPV4 and DOMAIN indicators from all pulses that you have subscribed to in the web interface that have been modified since April 15th, 2015.
+ ``` bash
+ java -jar target/DirectConnect-Java-SDK-0.1.0.jar -k <your key> -d 2015-04-15 -i IPV4,DOMAIN
+ ```
+
 ## Embedding in an Application
 
 1. Follow installation and usage steps outlined above
