@@ -11,7 +11,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Indicator {
     private String indicator;
-    private String type;
+    private IndicatorType type;
     private String description;
     private Date created;
 
@@ -33,11 +33,11 @@ public class Indicator {
      * @see IndicatorType
      * @return ip, domain, md5
      */
-    public String getType() {
+    public IndicatorType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(IndicatorType type) {
         this.type = type;
     }
 
