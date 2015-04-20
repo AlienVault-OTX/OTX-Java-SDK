@@ -1,5 +1,5 @@
 # OTX DirectConnect Java SDK
-OTX DirectConnect provides a mechanism to automatically pull indicators of compromise from the Open Threat Exchange portal into your environment.  The DirectConnect API provides access to all _Pulses_ that you have subscribed to in Open Threat Exchange (otx.alienvault.com).
+OTX DirectConnect provides a mechanism to automatically pull indicators of compromise from the Open Threat Exchange portal into your environment.  The DirectConnect API provides access to all _Pulses_ that you have subscribed to in Open Threat Exchange (https://otx.alienvault.com).
 
 ## Installation and Usage
 1. Clone this repo
@@ -10,6 +10,7 @@ mvn install
 3. Then execute the resulting jar file
 ``` bash
 java -jar target/DirectConnect-Java-SDK-0.1.0.jar
+```
 
 ## Commandline Usage
 
