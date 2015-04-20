@@ -13,17 +13,16 @@ java -jar target/DirectConnect-Java-SDK-0.1.0.jar
 ```
 
 ## Commandline Usage
-
-usage: otx
- -d,--date <arg>          Only pulses modified since the date provided will be downloaded
- -i,--indicators <arg>    Indicator types to save to the file. Provide a comma separated string of indicators
-                          (IPV4,IPV6,DOMAIN,HOSTNAME,EMAIL,URL,URI,MD5,SHA1,SHA256,PEHASH,IMPHASH,CIDR,PATH,MUTEX,CVE)
- -k,--key <arg>           API Key from OTX Settings Page (https://otx.alienvault.com/settings/).
- -o,--output-file <arg>   File to save indicators (Optional, default will write to console)
+| Option | Long Format | Description |
+| ------:|  ------:| :------|
+|  -d  | --date <arg> | Only pulses modified since the date provided will be downloaded |
+|  -i  | --indicators <arg> | Indicator types to save to the file. Provide a comma separated string of indicators (IPV4,IPV6,DOMAIN,HOSTNAME,EMAIL,URL,URI,MD5,SHA1,SHA256,PEHASH,IMPHASH,CIDR,PATH,MUTEX,CVE) |
+|  -k  | --key <arg> | API Key from OTX Settings Page (https://otx.alienvault.com/settings/). |
+|  -o  | --output-file <arg> | File to save indicators (Optional, default will write to console) |
 
 ## Embedding in an Application
 
 1. Follow installation and usage steps outlined above
 2. Add the compiled jar file to your classpath (DirectConnect-Java-SDK-0.1.0.jar)
-3. Create a new **OTXConnection** object using the constructor that accepts an API key
+3. Create a new [OTXConnection](AlienVault-Labs/OTX-Java-SDK/blob/master/src/main/java/com/alienvault/otx/connect/OTXConnection.java) object using the constructor that accepts an API key
 4. Call the utility methods provided by OTXConnection to retrieve Pulses
