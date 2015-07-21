@@ -106,7 +106,7 @@ public class OTXConnection {
         List<Pulse> pulseList = new ArrayList<>();
         Page firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED,endpointParametersMap, Page.class);
         pulseList.addAll(firstPage.getResults());
-        while (firstPage.getNextURI() != null) {
+        while (firstPage.getNext() != null) {
             firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, endpointParametersMap, Page.class);
             pulseList.addAll(firstPage.getResults());
         }

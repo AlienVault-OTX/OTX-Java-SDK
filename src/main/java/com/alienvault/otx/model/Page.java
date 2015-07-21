@@ -11,8 +11,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Page {
     private Integer count;
-    private URI nextURI;
-    private URI previousURI;
+    private URI next;
+    private URI previous;
     private List<Pulse> results;
 
     public Integer getCount() {
@@ -23,20 +23,20 @@ public class Page {
         this.count = count;
     }
 
-    public URI getNextURI() {
-        return nextURI;
+    public URI getNext() {
+        return next;
     }
 
-    public void setNextURI(URI nextURI) {
-        this.nextURI = nextURI;
+    public void setNext(URI nextURI) {
+        this.next = nextURI;
     }
 
-    public URI getPreviousURI() {
-        return previousURI;
+    public URI getPrevious() {
+        return previous;
     }
 
-    public void setPreviousURI(URI previousURI) {
-        this.previousURI = previousURI;
+    public void setPrevious(URI previousURI) {
+        this.previous = previousURI;
     }
 
     public List<Pulse> getResults() {
