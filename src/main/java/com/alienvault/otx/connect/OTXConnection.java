@@ -30,6 +30,8 @@ public class OTXConnection {
     private String otxHost = "otx.alienvault.com";
     private String otxScheme = "https";
     private Integer otxPort = null;
+    /** cskellie - Page count to pass to parameters map */
+    private Integer pageCount = 1;
     private static DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 
     /**
@@ -106,8 +108,10 @@ public class OTXConnection {
         List<Pulse> pulseList = new ArrayList<>();
         Page firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED,endpointParametersMap, Page.class);
         pulseList.addAll(firstPage.getResults());
-        while (firstPage.getNext() != null) {
-            firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, endpointParametersMap, Page.class);
+        while (firstPage.getNext() != null) 
+        {
+        	// cskellie - passed in new parameter with page count to fetch next page of results.
+            firstPage = executeGetRequest(OTXEndpoints.SUBSCRIBED, Collections.singletonMap(OTXEndpointParameters.PAGE, ++pageCount), Page.class);
             pulseList.addAll(firstPage.getResults());
         }
         return pulseList;
@@ -120,9 +124,11 @@ public class OTXConnection {
     private URI buildURI(OTXEndpoints endpoint, Map<OTXEndpointParameters, ?> endpointParametersMap) throws URISyntaxException, MalformedURLException {
 
         String endpointString = endpoint.getEndpoint();
-        if(endpointParametersMap!=null){
+        if(endpointParametersMap!=null)
+        {
             endpointString = endpointString+"?";
-            for (Map.Entry<OTXEndpointParameters, ?> otxEndpointParametersEntry : endpointParametersMap.entrySet()) {
+            for (Map.Entry<OTXEndpointParameters, ?> otxEndpointParametersEntry : endpointParametersMap.entrySet()) 
+            {
                 String parameterName = otxEndpointParametersEntry.getKey().getParameterName();
                 String value = otxEndpointParametersEntry.getValue().toString();
                 endpointString = endpointString+ String.format("%s=%s&", parameterName, value);
