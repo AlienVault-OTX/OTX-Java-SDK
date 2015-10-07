@@ -11,7 +11,10 @@ public enum OTXEndpointParameters {
     /**
      * Modified since is used by the SUBSCRIBED endpoint to limit the Pulses return.
      */
-    MODIFIED_SINCE("modified_since", OTXEndpoints.SUBSCRIBED, OTXEndpointParameterTypes.DATE);
+    MODIFIED_SINCE("modified_since", OTXEndpoints.SUBSCRIBED, OTXEndpointParameterTypes.DATE),
+    
+    /** cskellie - page parameter to get next page of results. */
+    PAGE("page", OTXEndpoints.SUBSCRIBED, OTXEndpointParameterTypes.INTEGER);
 
     private String parameterName;
     private OTXEndpoints endPoint;
