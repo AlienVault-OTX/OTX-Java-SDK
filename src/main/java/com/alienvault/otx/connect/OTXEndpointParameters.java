@@ -5,25 +5,47 @@ package com.alienvault.otx.connect;
  */
 public enum OTXEndpointParameters {
     /**
-     * Limit is used by the SUBSCRIBED endpoint to set the page size
+     * Limit is used by any Paged endpoint to set the page size
      */
-    LIMIT("limit", OTXEndpoints.SUBSCRIBED, OTXEndpointParameterTypes.INTEGER),
+    LIMIT("limit", OTXEndpointParameterTypes.INTEGER),
     /**
      * Modified since is used by the SUBSCRIBED endpoint to limit the Pulses return.
      */
-    MODIFIED_SINCE("modified_since", OTXEndpoints.SUBSCRIBED, OTXEndpointParameterTypes.DATE),
-    
-    /** cskellie - page parameter to get next page of results. */
-    PAGE("page", OTXEndpoints.SUBSCRIBED, OTXEndpointParameterTypes.INTEGER);
+    MODIFIED_SINCE("modified_since", OTXEndpointParameterTypes.DATE),
+    /**
+     * Page is used by any Paged endpoint to set the page to retrieve
+     */
+    PAGE("page", OTXEndpointParameterTypes.INTEGER),
+    /**
+     * id is used by a number of endpoints for indicator and pulse retrieval
+     */
+    ID("id", OTXEndpointParameterTypes.STRING, true),
+    /**
+     * query is used for search endpoints
+     */
+    QUERY("q", OTXEndpointParameterTypes.STRING),
+    /**
+     * username is used for user related actions
+     */
+    USERNAME("username", OTXEndpointParameterTypes.STRING,true),
+    /**
+     * action is used for user
+     */
+    ACTION("action",OTXEndpointParameterTypes.STRING,true);
 
     private String parameterName;
-    private OTXEndpoints endPoint;
     private OTXEndpointParameterTypes type;
+    private boolean restVariable;
 
-    OTXEndpointParameters(String parameterName, OTXEndpoints endPoint, OTXEndpointParameterTypes type) {
+    OTXEndpointParameters(String parameterName, OTXEndpointParameterTypes type) {
         this.parameterName = parameterName;
-        this.endPoint = endPoint;
         this.type = type;
+    }
+
+    OTXEndpointParameters(String parameterName, OTXEndpointParameterTypes type, boolean restVariable) {
+        this.parameterName = parameterName;
+        this.type = type;
+        this.restVariable = restVariable;
     }
 
     /**
@@ -41,9 +63,9 @@ public enum OTXEndpointParameters {
     }
 
     /**
-     * @return the endpoint related to this parameter
+     * @return whether this is a rest variable
      */
-    public OTXEndpoints getEndPoint() {
-        return endPoint;
+    public boolean isRestVariable() {
+        return restVariable;
     }
 }

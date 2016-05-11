@@ -1,6 +1,9 @@
-package com.alienvault.otx.model;
+package com.alienvault.otx.model.pulse;
 
+import com.alienvault.otx.model.indicator.Indicator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -15,15 +18,18 @@ public class Pulse {
     private String name;
     private String description;
     private String author_name;
+    private String tlp;
     private Date modified;
     private Date created;
     private List<String> tags;
     private List<String> references;
     private Integer revision;
     private List<Indicator> indicators;
+    private boolean isPublic = true;
 
     /**
      * The internal ID of the pulse
+     *
      * @return string representing the pulse id
      */
     public String getId() {
@@ -36,6 +42,7 @@ public class Pulse {
 
     /**
      * The name of the pulse
+     *
      * @return the pulse name
      */
     public String getName() {
@@ -48,6 +55,7 @@ public class Pulse {
 
     /**
      * The description of the pulse
+     *
      * @return the description provided when the pulse was originally created
      */
     public String getDescription() {
@@ -60,6 +68,7 @@ public class Pulse {
 
     /**
      * The name of the author of the pulse
+     *
      * @return the author who originally submitted the pulse
      */
     public String getAuthor_name() {
@@ -72,6 +81,7 @@ public class Pulse {
 
     /**
      * The last date this pulse was updated
+     *
      * @return last modification date
      */
     public Date getModified() {
@@ -84,6 +94,7 @@ public class Pulse {
 
     /**
      * The date this pulse was created
+     *
      * @return creation date
      */
     public Date getCreated() {
@@ -96,6 +107,7 @@ public class Pulse {
 
     /**
      * Tags associted with this pulse
+     *
      * @return list of tags
      */
     public List<String> getTags() {
@@ -108,6 +120,7 @@ public class Pulse {
 
     /**
      * The list of references associated with this pulse
+     *
      * @return a list of references
      */
     public List<String> getReferences() {
@@ -120,6 +133,7 @@ public class Pulse {
 
     /**
      * The revision of this representation of the pulse
+     *
      * @return
      */
     public Integer getRevision() {
@@ -132,6 +146,7 @@ public class Pulse {
 
     /**
      * The indicators associated with this pulse
+     *
      * @return List of indicators
      */
     public List<Indicator> getIndicators() {
@@ -142,13 +157,32 @@ public class Pulse {
         this.indicators = indicators;
     }
 
+
     @Override
     public String toString() {
         return "Pulse{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", tags=" + tags +
-                ", indicators=" + Arrays.deepToString(indicators.toArray()) +
+                ", indicators=" + Arrays.deepToString((indicators == null ? new String[]{} : indicators.toArray())) +
                 '}';
+    }
+    @JsonSetter("public")
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+    @JsonGetter("public")
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    @JsonGetter("tlp")
+    public String getTlp() {
+        return tlp;
+    }
+
+    @JsonSetter("tlp")
+    public void setTlp(String tlp) {
+        this.tlp = tlp;
     }
 }

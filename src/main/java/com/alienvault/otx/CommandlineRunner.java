@@ -1,15 +1,15 @@
 package com.alienvault.otx;
 
+import com.alienvault.otx.connect.ConnectionUtil;
 import com.alienvault.otx.connect.OTXConnection;
-import com.alienvault.otx.model.Indicator;
-import com.alienvault.otx.model.IndicatorType;
-import com.alienvault.otx.model.Pulse;
+import com.alienvault.otx.model.indicator.Indicator;
+import com.alienvault.otx.model.indicator.IndicatorType;
+import com.alienvault.otx.model.pulse.Pulse;
 import org.apache.commons.cli.*;
 import org.joda.time.DateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -58,7 +58,7 @@ public class CommandlineRunner {
             if (cmd.hasOption('i'))
                 types = parseTypes(cmd.getOptionValue('i'));
 
-            OTXConnection connection = getOtxConnection(run, apiKey);
+            OTXConnection connection = ConnectionUtil.getOtxConnection(run.getEnvironment(), apiKey);
             List<Pulse> pulses;
             if (date != null)
                 pulses = connection.getPulsesSinceDate(date);
@@ -111,21 +111,5 @@ public class CommandlineRunner {
         formatter.printHelp("otx", getOptions());
     }
 
-    private static OTXConnection getOtxConnection(ConfigurableApplicationContext run, String apiKey) {
-        ConfigurableEnvironment environment = run.getEnvironment();
-        String otxHost = environment.getProperty("host");
-        String otxScheme = environment.getProperty("scheme");
-        String otxPort = environment.getProperty("port");
-        Integer port = null;
-        if (otxPort != null)
-            port = Integer.valueOf(otxPort);
-        OTXConnection connection;
-        if (port != null) {
-            connection = new OTXConnection(apiKey, otxHost, otxScheme, port);
-        } else {
-            connection = new OTXConnection(apiKey);
-        }
-        return connection;
-    }
 }
 

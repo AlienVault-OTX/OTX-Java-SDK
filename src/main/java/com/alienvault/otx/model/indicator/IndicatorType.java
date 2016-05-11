@@ -1,4 +1,4 @@
-package com.alienvault.otx.model;
+package com.alienvault.otx.model.indicator;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

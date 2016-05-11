@@ -9,11 +9,19 @@ import java.util.List;
  * A Page of results
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Page {
+public class Page<T> {
     private Integer count;
     private URI next;
     private URI previous;
-    private List<Pulse> results;
+    private List<T> results;
+
+    public List<T> getResults() {
+        return results;
+    }
+
+    public void setResults(List<T> results) {
+        this.results = results;
+    }
 
     public Integer getCount() {
         return count;
@@ -39,11 +47,4 @@ public class Page {
         this.previous = previousURI;
     }
 
-    public List<Pulse> getResults() {
-        return results;
-    }
-
-    public void setResults(List<Pulse> results) {
-        this.results = results;
-    }
 }

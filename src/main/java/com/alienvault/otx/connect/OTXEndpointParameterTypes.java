@@ -5,5 +5,6 @@ package com.alienvault.otx.connect;
  */
 public enum OTXEndpointParameterTypes {
     DATE,
+    STRING,
     INTEGER
 }
