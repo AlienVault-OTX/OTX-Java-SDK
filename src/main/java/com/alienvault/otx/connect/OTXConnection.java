@@ -18,7 +18,10 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.HtmlUtils;
+import org.springframework.web.util.UriUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -250,7 +253,12 @@ public class OTXConnection {
             String rawQuery = firstPage.getNext().getRawQuery();
             String nextPage = getParameterFromQueryString(rawQuery, OTXEndpointParameters.PAGE);
             // cskellie - passed in new parameter with page count to fetch next page of results.
-            firstPage = executeGetRequest(endpoint, Collections.singletonMap(OTXEndpointParameters.PAGE, nextPage), page.getClass());
+            Map parametersMap = new HashMap<>();
+            if (endpointParametersMap!=null) {
+                parametersMap.putAll(endpointParametersMap);
+            }
+            parametersMap.putAll(Collections.singletonMap(OTXEndpointParameters.PAGE, nextPage));
+            firstPage = executeGetRequest(endpoint, parametersMap, page.getClass());
             pulseList.addAll(firstPage.getResults());
         }
         return pulseList;
@@ -290,9 +298,13 @@ public class OTXConnection {
                         endpointString = endpointString + "?";
                         first = false;
                     }
-                    String parameterName = otxEndpointParametersEntry.getKey().getParameterName();
-                    String value = otxEndpointParametersEntry.getValue().toString();
-                    endpointString = endpointString + String.format("%s=%s&", parameterName, value);
+                    try {
+                        String parameterName = otxEndpointParametersEntry.getKey().getParameterName();
+                        String value = UriUtils.encodeQueryParam(otxEndpointParametersEntry.getValue().toString(), "UTF-8");
+                        endpointString = endpointString + String.format("%s=%s&", parameterName, value);
+                    } catch (UnsupportedEncodingException e) {
+                        log.error("Unpossible");
+                    }
                 }
             }
         }

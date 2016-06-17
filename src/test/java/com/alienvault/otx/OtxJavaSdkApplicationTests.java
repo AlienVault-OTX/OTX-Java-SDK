@@ -18,12 +18,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StringUtils;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import static org.junit.Assert.assertTrue;
 
@@ -43,7 +45,10 @@ public class OtxJavaSdkApplicationTests {
 
     @Before
     public void setUp() throws Exception {
-        otxConnection = ConnectionUtil.getOtxConnection(env, env.getProperty("key"));
+        String property = env.getProperty("key");
+        if(StringUtils.isEmpty(property))
+            throw new Exception("Error loading API key.  Please enter your api key in src/test/resources/test_applications.properties before running tests");
+        otxConnection = ConnectionUtil.getOtxConnection(env, property);
         VALID_PULSE_NAME = env.getProperty("VALID_PULSE_NAME");
         VALID_PULSE_ID = env.getProperty("VALID_PULSE_ID");
         VALID_USERNAME = env.getProperty("VALID_USERNAME");
@@ -74,7 +79,8 @@ public class OtxJavaSdkApplicationTests {
     @Test
     public void testGetRelatedPulses() throws MalformedURLException, URISyntaxException {
         List<Pulse> allRelatedPulses = otxConnection.getAllRelatedPulses(VALID_PULSE_ID);
-        assertTrue(allRelatedPulses.size() == 1);
+        int NUM_RELATED_PULSES = Integer.valueOf(env.getProperty("NUMBER_PULSES_RELATED_TO_VALID_PULSE_ID"));
+        assertTrue(allRelatedPulses.size() >= NUM_RELATED_PULSES);
     }
 
     @Test
@@ -103,16 +109,22 @@ public class OtxJavaSdkApplicationTests {
 
     @Test
     public void testCreatePulse() throws MalformedURLException, URISyntaxException {
+        Pulse newPulse = getPulse();
+        Pulse createdPulse = otxConnection.createPulse(newPulse);
+        assertTrue("Pulse creation success", createdPulse != null);
+    }
+
+    private Pulse getPulse() {
         Pulse newPulse = new Pulse();
-        newPulse.setName("New Pulse from Javaaa");
+        newPulse.setName("New Pulse from Javaaa"+ new Random().nextInt());
         newPulse.setDescription("New Pulse from Javaaa.  The SDK!");
         List<Indicator> indis = Collections.singletonList(getIndicator());
         newPulse.setIndicators(indis);
         newPulse.setTags(Collections.singletonList("Tags Test"));
         newPulse.setReferences(Collections.singletonList("http://reference.com"));
         newPulse.setTlp("white");
-        Pulse createdPulse = otxConnection.createPulse(newPulse);
-        assertTrue("Pulse creation success", createdPulse != null);
+        newPulse.setPublic(false);
+        return newPulse;
     }
 
     @Test
@@ -126,7 +138,7 @@ public class OtxJavaSdkApplicationTests {
     @Test
     public void testListEvents() throws MalformedURLException, URISyntaxException {
         List<Event> allEvents = otxConnection.getAllEvents();
-        List<Event> eventsSince = otxConnection.getEventsSince(DateTime.now().minusDays(10));
+        List<Event> eventsSince = otxConnection.getEventsSince(DateTime.now().minusDays(5));
         assertTrue("No events returned", allEvents.size() > 0);
         assertTrue("No events since returned", eventsSince.size() > 0);
         assertTrue("All events not larger then a subset", allEvents.size() > eventsSince.size());
