@@ -19,6 +19,7 @@ public class Pulse {
     private String name;
     private String description;
     private String author_name;
+    private String adversary;
     private String tlp;
     @JsonDeserialize(using = OtxDateDeserializer.class)
     private Date modified;
@@ -26,6 +27,8 @@ public class Pulse {
     private Date created;
     private List<String> tags;
     private List<String> references;
+    private List<String> industries;
+    private List<String> targeted_countries;
     private Integer revision;
     private List<Indicator> indicators;
     private boolean isPublic = true;
@@ -122,6 +125,26 @@ public class Pulse {
     }
 
     /**
+     * Industries associated with this pulse
+     *
+     * @return list of industries
+     */
+    public List<String> getIndustries(){
+        return industries;
+    }
+    public void setIndustries(List<String> industries){
+        this.industries = industries;
+    }
+    /**
+     * Adversary
+     */
+    public String getAdversary(){
+        return adversary;
+    }
+    public void setAdversary(String adversary){
+        this.adversary = adversary;
+    }
+    /**
      * The list of references associated with this pulse
      *
      * @return a list of references
@@ -133,6 +156,8 @@ public class Pulse {
     public void setReferences(List<String> references) {
         this.references = references;
     }
+
+
 
     /**
      * The revision of this representation of the pulse
@@ -187,5 +212,13 @@ public class Pulse {
     @JsonSetter("tlp")
     public void setTlp(String tlp) {
         this.tlp = tlp;
+    }
+    @JsonGetter("targeted_countries")
+    public List<String> getTargetedCountries(){
+        return targeted_countries;
+    }
+    @JsonSetter("targeted_countries")
+    public void setTargetedCountries(List<String> targeted_countries){
+        this.targeted_countries = targeted_countries;
     }
 }
