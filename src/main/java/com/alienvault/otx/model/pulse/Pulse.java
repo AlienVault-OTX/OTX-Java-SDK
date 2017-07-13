@@ -4,6 +4,7 @@ import com.alienvault.otx.model.indicator.Indicator;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -19,7 +20,9 @@ public class Pulse {
     private String description;
     private String author_name;
     private String tlp;
+    @JsonDeserialize(using = OtxDateDeserializer.class)
     private Date modified;
+    @JsonDeserialize(using = OtxDateDeserializer.class)
     private Date created;
     private List<String> tags;
     private List<String> references;
