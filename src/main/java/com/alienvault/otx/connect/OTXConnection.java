@@ -252,6 +252,16 @@ public class OTXConnection {
     }
 
     private List<Pulse> getPulses(Map<OTXEndpointParameters, ?> endpointParametersMap) throws URISyntaxException, MalformedURLException {
+        if (endpointParametersMap == null || !endpointParametersMap.containsKey(OTXEndpointParameters.LIMIT)){
+            Map newParams;
+            if (endpointParametersMap != null) {
+                newParams = new HashMap(endpointParametersMap);
+            }else{
+                newParams = new HashMap();
+            }
+            newParams.put(OTXEndpointParameters.LIMIT, 20);
+            endpointParametersMap = newParams;
+        }
         return (List<Pulse>) getPagedResults(endpointParametersMap, new PulsePage(), OTXEndpoints.SUBSCRIBED);
     }
 
