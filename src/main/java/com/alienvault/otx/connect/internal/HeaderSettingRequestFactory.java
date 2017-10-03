@@ -14,7 +14,10 @@ import java.net.URI;
  * authentication.
  */
 public class HeaderSettingRequestFactory extends SimpleClientHttpRequestFactory {
-    private static final String SDK_USER_AGENT = "OTX Java SDK/1.0/"+System.getProperty("java.version");
+    private static final String SDK_USER_AGENT = String.format("%s/%s/%s",
+            System.getProperty("otx.sdk.project", "OTX Java SDK"),
+            System.getProperty("otx.sdk.version", "1.0"),
+            System.getProperty("java.version"));
     private String apiKey;
 
     public HeaderSettingRequestFactory(String apiKey) {
