@@ -1,0 +1,9 @@
+language: java
+jdk:
+- oraclejdk7
+- openjdk6
+script: mvn install
+env:
+  global:
+  - secure: BCJzPSsG/wijzc0KM88zGGzX6BgkJGvjfKUcT/gndOKu3+4T+qUjmM6TnRa2kDavQwDJA0fFU+tInRKJmbWrgxrmIomz/E63g+wlunQCkfUuAozm6OMRFoo1q1Buu/vbI/4HMALFTH8NG4b4AfpgNztvuz7gj8Kkye3ZZ+PVAzY=
+  - secure: Qj4JCRWqC6/EdtTyQmNu3sZ6TCdnFGeF0EdmsBojE+/jNl8i1getMprIw/xTZqAKhiOMVuiDNbd2GcUWhBrra8uYtLLQyakEKVQs+WfHzjfITub2kvPnYVZyr6Kkwg/6TXSrbfU/1/bL5q2Ke6i1XxD67fbY0YdoOgEn8HnSsE0=
