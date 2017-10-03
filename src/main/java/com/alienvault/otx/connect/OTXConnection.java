@@ -48,7 +48,7 @@ public class OTXConnection {
     private String otxHost = "otx.alienvault.com";
     private String otxScheme = "https";
     private Integer otxPort = null;
-    private static DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+    private static DateTimeFormatter fmt = ISODateTimeFormat.dateTimeNoMillis();
     private Log log = LogFactory.getLog(OTXConnection.class);
 
     /**
@@ -252,20 +252,21 @@ public class OTXConnection {
     }
 
     private List<Pulse> getPulses(Map<OTXEndpointParameters, ?> endpointParametersMap) throws URISyntaxException, MalformedURLException {
-        if (endpointParametersMap == null || !endpointParametersMap.containsKey(OTXEndpointParameters.LIMIT)){
-            Map newParams;
-            if (endpointParametersMap != null) {
-                newParams = new HashMap(endpointParametersMap);
-            }else{
-                newParams = new HashMap();
-            }
-            newParams.put(OTXEndpointParameters.LIMIT, 20);
-            endpointParametersMap = newParams;
-        }
+
         return (List<Pulse>) getPagedResults(endpointParametersMap, new PulsePage(), OTXEndpoints.SUBSCRIBED);
     }
 
     private List<?> getPagedResults(Map<OTXEndpointParameters, ?> endpointParametersMap, Page<?> page, OTXEndpoints endpoint) throws MalformedURLException, URISyntaxException {
+        if (endpointParametersMap == null || !endpointParametersMap.containsKey(OTXEndpointParameters.LIMIT)){
+               Map newParams;
+               if (endpointParametersMap != null) {
+                   newParams = new HashMap(endpointParametersMap);
+               }else{
+                   newParams = new HashMap();
+               }
+               newParams.put(OTXEndpointParameters.LIMIT, 20);
+               endpointParametersMap = newParams;
+           }
         List pulseList = new ArrayList<>();
         Page<?> firstPage = executeGetRequest(endpoint, endpointParametersMap, page.getClass());
         pulseList.addAll(firstPage.getResults());
