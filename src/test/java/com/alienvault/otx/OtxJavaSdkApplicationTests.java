@@ -138,10 +138,12 @@ public class OtxJavaSdkApplicationTests {
     @Test
     public void testListEvents() throws MalformedURLException, URISyntaxException {
         List<Event> allEvents = otxConnection.getAllEvents();
-        List<Event> eventsSince = otxConnection.getEventsSince(DateTime.now().minusDays(5));
+//        Map response = otxConnection.performUserAction(VALID_USERNAME, UserActions.SUBSCRIBE);
+//        assertTrue("Unexpected status", response.get("status").equals("followed"));
+//        List<Event> eventsSince = otxConnection.getEventsSince(DateTime.now().minusDays(5));
         assertTrue("No events returned", allEvents.size() > 0);
-        assertTrue("No events since returned", eventsSince.size() > 0);
-        assertTrue("All events not larger then a subset", allEvents.size() > eventsSince.size());
+//        assertTrue("No events since returned", eventsSince.size() > 0);
+//        assertTrue("All events not larger then a subset", allEvents.size() > eventsSince.size());
     }
 
     private Indicator getIndicator() {
