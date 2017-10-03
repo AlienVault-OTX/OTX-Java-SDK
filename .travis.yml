@@ -1,7 +1,4 @@
 language: java
-jdk:
-- oraclejdk7
-- openjdk6
 script: mvn install
 env:
   global:
