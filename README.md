@@ -1,4 +1,7 @@
 # OTX DirectConnect Java SDK
+
+[Build Status](https://travis-ci.org/AlienVault-OTX/OTX-Java-SDK.svg?branch=master) 
+
 OTX DirectConnect provides a mechanism to automatically pull indicators of compromise from the Open Threat Exchange portal into your environment.  The DirectConnect API provides access to all _Pulses_ that you have subscribed to in Open Threat Exchange (https://otx.alienvault.com). 
 
 ## Installation and Usage
