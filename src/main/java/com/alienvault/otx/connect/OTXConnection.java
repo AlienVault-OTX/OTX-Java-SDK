@@ -67,8 +67,6 @@ public class OTXConnection {
         if (port != null)
             otxPort = port;
         configureRestTemplate(apiKey);
-        retryTemplate = new RetryTemplate();
-        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
     }
 
     /**
@@ -112,6 +110,8 @@ public class OTXConnection {
     private void configureRestTemplate(String apiKey) {
         ClientHttpRequestFactory requestFactory = HTTPConfig.createRequestFactory(apiKey);
         restTemplate = new RestTemplate(requestFactory);
+        retryTemplate = new RetryTemplate();
+        retryTemplate.setBackOffPolicy(new ExponentialBackOffPolicy());
     }
 
     /**
