@@ -258,7 +258,7 @@ public class OTXConnection {
     private List<?> getPagedResults(Map<OTXEndpointParameters, ?> endpointParametersMap, Page<?> page, OTXEndpoints endpoint) throws MalformedURLException, URISyntaxException {
         Map newParams;
 
-        if (endpointParametersMap == null) {
+        if (endpointParametersMap != null) {
             newParams = new HashMap(endpointParametersMap);
         } else {
             newParams = new HashMap();
