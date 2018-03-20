@@ -9,6 +9,10 @@ public enum OTXEndpointParameters {
      */
     LIMIT("limit", OTXEndpointParameterTypes.INTEGER),
     /**
+     * Limits number of indicators per pulse to passed in number
+     */
+    INDICATOR_LIMIT("indicator_limit", OTXEndpointParameterTypes.INTEGER),
+    /**
      * Modified since is used by the SUBSCRIBED endpoint to limit the Pulses return.
      */
     MODIFIED_SINCE("modified_since", OTXEndpointParameterTypes.DATE),

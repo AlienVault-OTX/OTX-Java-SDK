@@ -11,14 +11,16 @@ import java.util.Date;
 
 public class OtxDateDeserializer extends JsonDeserializer<Date> {
 
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private static final SimpleDateFormat FORMAT_MILLIS = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
     @Override
     public Date deserialize(JsonParser jsonparser,
                             DeserializationContext deserializationcontext) throws IOException, JsonProcessingException {
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         String date = jsonparser.getText();
         try {
-            return format.parse(date);
+            return date.indexOf('.') > -1 ? FORMAT_MILLIS.parse(date) : FORMAT.parse(date);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
