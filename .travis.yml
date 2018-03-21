@@ -13,5 +13,4 @@ deploy:
   file_glob: true
   on:
     tags: true
-    branch: master
     repo: AlienVault-OTX/OTX-Java-SDK
