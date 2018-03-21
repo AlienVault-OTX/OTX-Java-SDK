@@ -1,5 +1,6 @@
 language: java
-script: mvn install
+script:
+  - mvn install
 env:
   global:
   - secure: g0A9usPhe/Tj0lnuCwUHgA88fsJ0eU1sgBCUUEUXDSE9wqyHs8ossEagRXOv3RFA+mULCXHuiSyD0CCkvfSfvL9zYzZO3XOcNiMy8GWZahUtYJph256bvw8D5/Y+HJTD8ppvPYjptKs6RyQSfQw796XIMUWHQQhUaKX6a2jho40=
@@ -11,5 +12,6 @@ deploy:
   file: target/*.jar
   file_glob: true
   on:
+    tags: true
     branch: master
     repo: AlienVault-OTX/OTX-Java-SDK
