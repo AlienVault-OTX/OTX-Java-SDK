@@ -7,6 +7,7 @@ env:
   - secure: aV7iNqT38xPCa0PaDP9daA0ykB08j6tK+hVp5aEiQLmZZqCZXnSzPNESZDvLq7IqT5vbynNGMti96gi0jVEnltFY+5ZTSXEmSQycYNzoBOG2zRrb3mk5rYBd3cu/vvA8J3JvJEb+oRuIt8rCL27Qa/oL/+qdvL+vlPnHPK0v+zo=
 deploy:
   provider: releases
+  skip_cleanup: true
   api_key:
     secure: cRwkspFGljS0CPHGsYmpKCP9tSDdGRNv40zJa8+GL6rsiMeAGnbOuVNkkGMFK6whXh5Xwc6dgX2a5s04Qo2Uivvu3qANLlTccRsthnufJM0RG9B+atZhbqgNF6Njpuy6O4afdGdcMsceBErLhgK8f18VVKUyFZ5NTbDnornD5QQ=
   file: target/*.jar
