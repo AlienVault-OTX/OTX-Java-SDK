@@ -21,7 +21,6 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
-import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -48,7 +47,7 @@ public class OTXConnection {
     private String otxHost = "otx.alienvault.com";
     private String otxScheme = "https";
     private Integer otxPort = null;
-    private static DateTimeFormatter fmt = ISODateTimeFormat.dateTimeNoMillis();
+    private static DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
     private Log log = LogFactory.getLog(OTXConnection.class);
 
     /**
@@ -257,16 +256,24 @@ public class OTXConnection {
     }
 
     private List<?> getPagedResults(Map<OTXEndpointParameters, ?> endpointParametersMap, Page<?> page, OTXEndpoints endpoint) throws MalformedURLException, URISyntaxException {
-        if (endpointParametersMap == null || !endpointParametersMap.containsKey(OTXEndpointParameters.LIMIT)){
-               Map newParams;
-               if (endpointParametersMap != null) {
-                   newParams = new HashMap(endpointParametersMap);
-               }else{
-                   newParams = new HashMap();
-               }
-               newParams.put(OTXEndpointParameters.LIMIT, 20);
-               endpointParametersMap = newParams;
-           }
+        Map newParams;
+
+        if (endpointParametersMap != null) {
+            newParams = new HashMap(endpointParametersMap);
+        } else {
+            newParams = new HashMap();
+        }
+
+        if (!endpointParametersMap.containsKey(OTXEndpointParameters.LIMIT)) {
+            newParams.put(OTXEndpointParameters.LIMIT, 20);
+        }
+
+        if (!endpointParametersMap.containsKey(OTXEndpointParameters.INDICATOR_LIMIT)) {
+            newParams.put(OTXEndpointParameters.INDICATOR_LIMIT, 10000);
+        }
+
+        endpointParametersMap = newParams;
+
         List pulseList = new ArrayList<>();
         Page<?> firstPage = executeGetRequest(endpoint, endpointParametersMap, page.getClass());
         pulseList.addAll(firstPage.getResults());
@@ -275,7 +282,7 @@ public class OTXConnection {
             String nextPage = getParameterFromQueryString(rawQuery, OTXEndpointParameters.PAGE);
             // cskellie - passed in new parameter with page count to fetch next page of results.
             Map parametersMap = new HashMap<>();
-            if (endpointParametersMap!=null) {
+            if (endpointParametersMap != null) {
                 parametersMap.putAll(endpointParametersMap);
             }
             parametersMap.putAll(Collections.singletonMap(OTXEndpointParameters.PAGE, nextPage));
@@ -283,7 +290,6 @@ public class OTXConnection {
             pulseList.addAll(firstPage.getResults());
         }
         return pulseList;
-
     }
 
     private String getParameterFromQueryString(String rawQuery, OTXEndpointParameters page) {
@@ -334,7 +340,7 @@ public class OTXConnection {
                         String value = UriUtils.encodeQueryParam(otxEndpointParametersEntry.getValue().toString(), "UTF-8");
                         endpointString = endpointString + String.format("%s=%s&", parameterName, value);
                     } catch (UnsupportedEncodingException e) {
-                        log.error("Unpossible");
+                        log.error("Impossible");
                     }
                 }
             }
