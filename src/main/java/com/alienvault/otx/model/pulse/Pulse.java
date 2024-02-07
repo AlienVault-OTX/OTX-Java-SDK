@@ -29,6 +29,7 @@ public class Pulse {
     private List<String> references;
     private List<String> industries;
     private List<String> targeted_countries;
+    private List<String> malware_families;
     private Integer revision;
     private List<Indicator> indicators;
     private boolean isPublic = true;
@@ -220,5 +221,13 @@ public class Pulse {
     @JsonSetter("targeted_countries")
     public void setTargetedCountries(List<String> targeted_countries){
         this.targeted_countries = targeted_countries;
+    }
+    @JsonGetter("malware_families")
+    public List<String> getMalwareFamilies(){
+        return malware_families;
+    }
+    @JsonSetter("malware_families")
+    public void setMalwareFamilies(List<String> malware_families){
+        this.malware_families = malware_families;
     }
 }
